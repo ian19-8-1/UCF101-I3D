@@ -11,6 +11,8 @@ import Model_I3D
 from Dataset import UCF101
 from Utils import build_paths, print_time, set_seed
 
+from torch.utils.tensorboard import SummaryWriter
+
 
 print_time('START TIME')
 
@@ -27,7 +29,7 @@ best_acc = 0                                                           # best te
 start_epoch = 0                                                        # start from epoch 0 or last checkpoint epoch
 num_epochs = 50                                                        # Default = 200
 initial_lr = .00001
-batch_size = 32
+batch_size = 4
 num_workers = 2
 num_classes = 101
 seed = 0
@@ -73,6 +75,8 @@ model = model.to(device)
 if model_summary:
     summary(model, input_size=(3, clip_len, 224, 224))
 
+writer = SummaryWriter()
+
 
 ### Optimizer, Loss, initial_lr Scheduler ##############################################################################
 
@@ -97,7 +101,7 @@ def train(epoch):
     start = timer()
     # scheduler.step()
     model.train()
-    # train_loss = 0
+    train_loss = 0
     correct = 0
     total = 0
 
@@ -108,6 +112,8 @@ def train(epoch):
     for batch_idx, (inputs, targets) in enumerate(trainloader):
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
+
+        print("Input shape: ", inputs.shape)
 
         per_frame_logits = model(inputs)
         # upsample to input size
@@ -126,6 +132,9 @@ def train(epoch):
 
         tot_loss += loss.data[0]
         loss.backward()
+
+        writer.add_scalar("Batch loss/train", loss, epoch)
+
 
         if num_iter == num_steps_per_update:
             steps += 1
@@ -159,6 +168,8 @@ def train(epoch):
     end = timer()
     optim_dict = optimizer.state_dict()
     current_lr = optim_dict['param_groups'][0]['lr']
+
+    writer.add_scalar("Loss/train", tot_loss, epoch)
 
     # print('Epoch %d | Loss: %.3f | Acc: %.2f%% | Current lr: %f | Time: %.2f min [Train]'
     #             % (epoch+1, train_loss/len(trainloader), 100.*correct/total, current_lr, (end - start)/60))
@@ -195,8 +206,10 @@ def test(epoch):
                                                           torch.max(targets, dim=2)[0])
             tot_cls_loss += cls_loss.data[0]
 
+
             loss = (0.5 * loc_loss + 0.5 * cls_loss) / num_steps_per_update
 
+            tot_loss += loss.data[0]
 
             # outputs = model(inputs)
             # loss = criterion(outputs, targets)
@@ -228,6 +241,11 @@ def test(epoch):
         best_acc = acc
 
 
+    writer.add_scalar("Loss/test", tot_loss, epoch)
+    writer.add_scalar("Accuracy/test", acc, epoch)
+
+
+
 for epoch in range(start_epoch, start_epoch+num_epochs):
     if epoch == start_epoch:
         print('\n==> Training model...\n')
@@ -236,3 +254,5 @@ for epoch in range(start_epoch, start_epoch+num_epochs):
 
     if (epoch + 1) % nTest == 0:
         test(epoch)
+
+writer.close()

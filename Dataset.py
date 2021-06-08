@@ -106,9 +106,12 @@ class UCF101(Dataset):
     def __getitem__(self, index):
         vid_dir, label, frame_count, class_name = self.data_list[index]
         buffer = self.load_frames(vid_dir, frame_count)
-        buffer = self.spatial_crop(buffer, self.crop_size)
+        # buffer = self.spatial_crop(buffer, self.crop_size)
         buffer = self.normalize(buffer)
         buffer = self.to_tensor(buffer)
+
+        label = [label] * self.clip_len
+        label = torch.from_numpy(np.asarray(label))
 
         return buffer, label
 
