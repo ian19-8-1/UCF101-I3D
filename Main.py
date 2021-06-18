@@ -134,6 +134,10 @@ def train(epoch):
         print("logits shape 2:", per_frame_logits.shape)
         print("targets shape:", targets.shape)
 
+        per_frame_logits = torch.mean(per_frame_logits, dim=1)
+        print("logits shape 3:", per_frame_logits.shape)
+        exit()
+
         # compute localization loss
         loc_loss = F.binary_cross_entropy_with_logits(per_frame_logits, targets)
         tot_loc_loss += loc_loss.data[0]
