@@ -57,12 +57,7 @@ print('Random Seed:', seed)
 print('\n==> Preparing Data...\n')
 
 trainset = UCF101(class_idxs=class_idxs, split=train_split, frames_root=frames_root, clip_len=clip_len, train=True)
-# print("trainset-buffer:", type(trainset[0][0]))
-# print("trainset-label:", type(trainset[0][1]))
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-# print("trainset-buffer AFTER:", type(trainset[0][0]))
-# print("trainset-label BEFORE:", type(trainset[0][1]))
-# exit()
 print("Buffer shape:", trainset[0][0].shape)
 print("Label shape:", trainset[0][1].shape)
 
@@ -136,8 +131,11 @@ def train(epoch):
         print("logits shape:", per_frame_logits.shape)
         print("targets shape:", targets.shape)
 
-        # print("logit type:", type(per_frame_logits[0][0]))
-        # print("target type:", type(targets[0][0]))
+        print("logit type:", type(per_frame_logits[0][0]))
+        print("target type:", type(targets[0][0]))
+
+        print("logit:", per_frame_logits[0][0])
+        print("target:", targets[0][0])
 
         exit()
 
