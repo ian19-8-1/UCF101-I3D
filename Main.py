@@ -133,8 +133,12 @@ def train(epoch):
 
         per_frame_logits = torch.mean(per_frame_logits, dim=1)
 
-        print("logit type:", type(per_frame_logits[0][0]))
-        print("target type:", type(targets[0][0]))
+        print("logits shape:", per_frame_logits.shape)
+        print("targets shape:", targets.shape)
+
+        # print("logit type:", type(per_frame_logits[0][0]))
+        # print("target type:", type(targets[0][0]))
+
         exit()
 
         # compute localization loss
