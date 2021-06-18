@@ -61,8 +61,8 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuff
 # print("trainset-buffer AFTER:", type(trainset[0][0]))
 # print("trainset-label BEFORE:", type(trainset[0][1]))
 # exit()
-print("Buffer shape:", trainset[0][0].shape)
-print("Label shape:", trainset[0][1].shape)
+# print("Buffer shape:", trainset[0][0].shape)
+# print("Label shape:", trainset[0][1].shape)
 
 testset = UCF101(class_idxs=class_idxs, split=test_split, frames_root=frames_root, clip_len=clip_len, train=False)
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
@@ -128,15 +128,15 @@ def train(epoch):
         # print("Input shape: ", inputs.shape)
 
         per_frame_logits = model(inputs)
-        print("logits shape 1:", per_frame_logits.shape)
+        # print("logits shape 1:", per_frame_logits.shape)
         # upsample to input size
         per_frame_logits = F.upsample(per_frame_logits, clip_len, mode='linear')
-        print("logits shape 2:", per_frame_logits.shape)
-        print("targets shape:", targets.shape)
+        # print("logits shape 2:", per_frame_logits.shape)
+        # print("targets shape:", targets.shape)
 
         per_frame_logits = torch.mean(per_frame_logits, dim=1)
-        print("logits shape 3:", per_frame_logits.shape)
-        exit()
+        # print("logits shape 3:", per_frame_logits.shape)
+        # exit()
 
         # compute localization loss
         loc_loss = F.binary_cross_entropy_with_logits(per_frame_logits, targets)
