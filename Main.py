@@ -13,6 +13,8 @@ from Utils import build_paths, print_time, set_seed
 
 from torch.utils.tensorboard import SummaryWriter
 
+import warnings
+
 
 print_time('START TIME')
 
@@ -130,7 +132,9 @@ def train(epoch):
         per_frame_logits = model(inputs)
         # print("logits shape 1:", per_frame_logits.shape)
         # upsample to input size
-        per_frame_logits = F.upsample(per_frame_logits, clip_len, mode='linear')
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            per_frame_logits = F.upsample(per_frame_logits, clip_len, mode='linear')
         # print("logits shape 2:", per_frame_logits.shape)
         # print("targets shape:", targets.shape)
 
