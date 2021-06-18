@@ -110,6 +110,11 @@ def train(epoch):
     tot_cls_loss = 0.0
 
     for batch_idx, (inputs, targets) in enumerate(trainloader):
+
+        print(inputs)
+        print(targets)
+        exit()
+
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
 
