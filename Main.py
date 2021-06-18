@@ -111,8 +111,8 @@ def train(epoch):
 
     for batch_idx, (inputs, targets) in enumerate(trainloader):
 
-        print(inputs)
-        print(targets)
+        print(type(inputs))
+        print(type(targets))
         exit()
 
         inputs, targets = inputs.to(device), targets.to(device)
