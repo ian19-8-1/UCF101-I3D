@@ -123,11 +123,14 @@ def train(epoch):
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
 
-        print("Input shape: ", inputs.shape)
+        # print("Input shape: ", inputs.shape)
 
         per_frame_logits = model(inputs)
+        print("logits shape 1:", per_frame_logits.shape)
         # upsample to input size
         per_frame_logits = F.upsample(per_frame_logits, clip_len, mode='linear')
+        print("logits shape 2:", per_frame_logits.shape)
+        print("targets shape:", targets.shape)
 
         # compute localization loss
         loc_loss = F.binary_cross_entropy_with_logits(per_frame_logits, targets)
