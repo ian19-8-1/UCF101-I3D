@@ -57,6 +57,9 @@ print('\n==> Preparing Data...\n')
 trainset = UCF101(class_idxs=class_idxs, split=train_split, frames_root=frames_root, clip_len=clip_len, train=True)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
 
+print("trainset[0][0]:", type(trainset[0][0]))
+print("trainset[0][1]:", type(trainset[0][1]))
+
 testset = UCF101(class_idxs=class_idxs, split=test_split, frames_root=frames_root, clip_len=clip_len, train=False)
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
@@ -111,8 +114,8 @@ def train(epoch):
 
     for batch_idx, (inputs, targets) in enumerate(trainloader):
 
-        print(type(inputs))
-        print(type(targets))
+        print("inputs:", type(inputs))
+        print("targets:", type(targets))
         exit()
 
         inputs, targets = inputs.to(device), targets.to(device)
