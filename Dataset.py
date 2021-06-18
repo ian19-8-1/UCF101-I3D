@@ -110,12 +110,12 @@ class UCF101(Dataset):
         buffer = self.normalize(buffer)
         buffer = self.to_tensor(buffer)
 
-        print("Dataset > label before:", type(label))
+        # print("Dataset > label before:", type(label))
 
         label = [label] * self.clip_len
         label = torch.from_numpy(np.asarray(label))
 
-        print("Dataset > label after:", type(label))
+        # print("Dataset > label after:", type(label))
 
         return buffer, label
 
