@@ -61,6 +61,8 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuff
 # print("trainset-buffer AFTER:", type(trainset[0][0]))
 # print("trainset-label BEFORE:", type(trainset[0][1]))
 # exit()
+print("Buffer shape:", trainset[0][0].shape)
+print("Label shape:", trainset[0][1].shape)
 
 testset = UCF101(class_idxs=class_idxs, split=test_split, frames_root=frames_root, clip_len=clip_len, train=False)
 testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
